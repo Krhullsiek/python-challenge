@@ -4,6 +4,8 @@ import csv
 
 csvpath = os.path.join('/Users/hulls/Desktop/GitHub/Python-challenge/python-challenge/PyPoll/Resources', 'election_data.csv')
 
+poll_data_df = pd.read_csv(csvpath)
+
 with open(csvpath) as poll_data:
 
     csvreader = csv.reader(poll_data, delimiter=',')
@@ -13,6 +15,7 @@ with open(csvpath) as poll_data:
     total_votes = []
     candidate_list = []
     vote_count = []
+
 
     for row in csvreader:
 
@@ -26,19 +29,27 @@ with open(csvpath) as poll_data:
 
 #print(f"List of candidates: {candidate_list}")
 
-khan_votes = candidate.count(candidate_list[0])
-correy_votes = candidate.count(candidate_list[1])
-li_votes = candidate.count(candidate_list[2])
-otooley_votes = candidate.count(candidate_list[3])
 
-    
+vote_count = poll_data_df["Candidate"].value_counts()
+
+percentages = poll_data_df["Candidate"].value_counts(normalize=True).mul(100).round(1).astype(str) + '%'
+#print(f"{percentages}")
+
+#print(f"{vote_count}")
+
+winner = poll_data_df["Candidate"].value_counts().idxmax()
+
+#print(f"{winner}")
 
 
+print(f"Election Results")
+print(f"---------------------------------")
 print(f"Total Votes: {(len(total_votes))}")
-print(f"v: {candidate_list[0]} {khan_votes}")
-print(f"v: {candidate_list[1]} {correy_votes}")
-print(f"v: {candidate_list[2]} {li_votes}")
-print(f"v: {candidate_list[3]} {otooley_votes}")
-
-
-
+print(f"---------------------------------")
+print(f"{candidate_list[0]}: {percentages[0]} ({vote_count[0]})")
+print(f"{candidate_list[1]}: {percentages[1]} ({vote_count[1]})")
+print(f"{candidate_list[2]}: {percentages[2]} ({vote_count[2]})")
+print(f"{candidate_list[3]}: {percentages[3]} ({vote_count[3]})")
+print(f"---------------------------------")
+print(f"Winner: {winner}")
+print(f"---------------------------------")
